@@ -1,39 +1,69 @@
 <html>
 <head>
-  <style>
-    /*MORPH*/
-    .morph {
-      -webkit-transition: all 1.5s ease;
-      -moz-transition: all 1.5s ease;
-      -o-transition: all 1.5s ease;
-      -ms-transition: all 1.5s ease;
-      transition: all 1.5s ease;
-      height: 300px;
-      width: 300px;
-    }
+<meta charset="ISO-8859-1"> 
 
-    .morph:hover{
-      -webkit-transform: rotate(360deg);
-      -moz-transform: rotate(360deg);
-      -o-transform: rotate(360deg);
-      -ms-transform: rotate(360deg);
-      transform: rotate(360deg);
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  ans_list_lvl2 = $("select.child").find("option");
+
+  $("select.main").on("change load", function(event) {
+   ans_lvl1 = parseInt($(this).val());
+   ans_lvl2 = $("select.child").val();
+   $("select.child").val(0);
+
+   $("select.child").find("option").slice(1).each(function() {
+    $(this).detach();
+   });
+
+   $("select.child").val(0);
+   ans_list_lvl2.each(function() {
+    if(Math.floor(parseInt($(this).val()) / 100) == ans_lvl1) {
+     $(this).appendTo($("select").last());
+     if($(this).val() == ans_lvl2) {
+      $("select").last().val(ans_lvl2);
+     }
     }
-    
-    .morph:hover img{
-      border-radius: 50%;
-    }
-    
-    img{
-      height: 300px;
-      width: 300px;
-    }
-  </style>
-  <title>Testing Website</title>
+   });
+   if($("select.child").val() == 0) {
+    $("select.child").text($("select.child").find(".main option").text());    
+    $("select.child").prop("data-placeholder", $("select.child").find(".main option").text());    
+   }
+
+  });
+});
+</script>
 </head>
 <body>
-  <div class="morph pic">
-    <img src="https://pm7643.customervoice360.com/assets_websites/5/Landing_Page/Branch_New.png" alt="scb">
-  </div>
+<p>First Option</p>
+<select required>
+	<option value="" disabled selected hidden>Please Choose..</option>
+	<optgroup label="Root Main 1">
+		<option value="1">Root cause 1</option>
+		<option value="2">Root cause 2</option>
+		<option value="3">Root cause 3</option>
+	</optgroup>
+	<optgroup label="Root Main 2">
+		<option value="4">Root cause 4</option>
+		<option value="5">Root cause 5</option>
+	</optgroup>
+</select>
+
+<br/>
+<br/>
+<p>Second Option</p>
+<select required class="main">
+	<option value="0" disabled selected hidden>Please Choose..</option>
+	<option value="1">Root Main 1</option>
+	<option value="2">Root Main 2</option>
+</select>
+<select required class="child">
+	<option value="0" disabled selected hidden>Please Choose..</option>
+	<option value="101">Root cause 1</option>
+	<option value="102">Root cause 2</option>
+	<option value="103">Root cause 3</option>
+	<option value="201">Root cause 4</option>
+	<option value="202">Root cause 5</option>
+</select>
 </body>
 </html>
